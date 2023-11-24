@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <title>Elasticsearch Flask Suggestions
+    </title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  </head>
+    <body>
+<input type="text" class="search_box" style="height:50px;font-size:14pt;">
+<ul class="results"></ul>
+<script>
+$(document).ready(function(){
+    let debounce;
+    $('.search_box').on('keydown',function(e){
+        clearTimeout(debounce)
+        debounce=setTimeout(()=>{
+            getAutoComplete();
+        },300
+        )
+    })
+})
+function getAutoComplete(){
+    let query=$('.search_box').val();
+    fetch(`http://127.0.0.1:5000/searchs?q=${encodeURIComponent(query.trim())}`)
+    .then((resp)=> resp.json())
+    .then((data)=>{
+        $('.results').empty();
+
+        for (let i=0;i<data.length;i++)
+        {
+            $('.results').append(`<li>${data[i]}</li>`)
+        }
+    })
+}
+</script>
+    </body>
+</html>
