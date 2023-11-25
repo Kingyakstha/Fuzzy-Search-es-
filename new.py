@@ -22,7 +22,7 @@ def search_autocomplete():
     clauses = [
         {
             "span_multi": {
-                "match": {"fuzzy": {"keyword": {"value": i, "fuzziness": "AUTO"}}}
+                "match": {"fuzzy": {"desc": {"value": i, "fuzziness": "AUTO"}}}
             }
         }
         for i in tokens
@@ -34,7 +34,7 @@ def search_autocomplete():
         }
     }
 
-    resp = es.search(index="new_qp", query=payload, size=MAX_SIZE)
+    resp = es.search(index="updated_qp", query=payload, size=MAX_SIZE)
     return [result["_source"]["desc"] for result in resp["hits"]["hits"]]
 
 
